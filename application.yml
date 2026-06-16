@@ -1,0 +1,9 @@
+aws:
+  region: ${AWS_REGION:us-east-1}
+  dynamodb:
+    endpoint: ${DYNAMODB_ENDPOINT:http://localhost:8000}
+  access-key: ${AWS_ACCESS_KEY:dummy}
+  secret-key: ${AWS_SECRET_KEY:dummy}
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
