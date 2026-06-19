@@ -2,8 +2,11 @@ package io.github.rohergun.urlshortener.shortener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Helper;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.SecureRandom;
 import java.time.Instant;
@@ -40,7 +43,9 @@ public class UrlShortenerService {
     }
 
     public String resolve(String shortCode) {
-        // Todo
+        return urlRepository.findByShortCode(shortCode)
+                .map(UrlMapping::getLongUrl)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Short URL Not found"));
     }
 
     private String generateCode() {
