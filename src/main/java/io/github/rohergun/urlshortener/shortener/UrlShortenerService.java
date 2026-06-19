@@ -1,10 +1,13 @@
 package io.github.rohergun.urlshortener.shortener;
 
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Helper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,24 @@ public class UrlShortenerService {
 
     public String shorten(String longUrl) {
         validator.validate(longUrl);
-//        // Todo generate code
+        String code = generateCode();
+
+        while (urlRepository.findByShortCode(code).isPresent()) {
+            code = generateCode();
+        }
+
+        UrlMapping urlMapping = new UrlMapping();
+        urlMapping.setShortCode(code);
+        urlMapping.setLongUrl(longUrl);
+        urlMapping.setCreatedAt(Instant.now().getEpochSecond());
+        urlMapping.setExpiresAt(Instant.now().plus(30, ChronoUnit.DAYS).getEpochSecond());
+
+        urlRepository.save(urlMapping);
+        return baseUrl + "/" + code;
+    }
+
+    public String resolve(String shortCode) {
+        // Todo
     }
 
     private String generateCode() {
