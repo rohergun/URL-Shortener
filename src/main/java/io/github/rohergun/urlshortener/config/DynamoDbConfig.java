@@ -14,16 +14,16 @@ import java.net.URI;
 @Configuration
 public class DynamoDbConfig {
 
-    @Value("${aws.region}")
+    @Value("${AWS_REGION:us-east-1}")
     private String region;
 
-    @Value("${aws.dynamodb.endpoint}")
+    @Value("${DYNAMODB_ENDPOINT:http://localhost:8000}")
     private String endpoint;
 
-    @Value("${aws.access-key}")
+    @Value("${AWS_ACCESS_KEY:dummy}")
     private String accessKey;
 
-    @Value("${aws.secret-key}")
+    @Value("${AWS_SECRET_KEY:dummy}")
     private String secretKey;
 
     @Bean
